@@ -1,5 +1,5 @@
 FROM node:20-alpine AS builder
-WORKDIR /tmp
+WORKDIR /app
 COPY . .
 # RUN npm i && npm run build && npm i --omit=dev
 RUN set -evx \
@@ -12,9 +12,5 @@ RUN set -evx \
   # 重新安装dependencies
   && pnpm i --prod
 
-FROM node:20-alpine
-WORKDIR /app
-COPY --from=builder /tmp/node_modules ./node_modules
-COPY --from=builder /tmp/dist ./dist
 EXPOSE 3000
 ENTRYPOINT node dist/main
