@@ -1,8 +1,8 @@
-FROM node:20 AS builder
+FROM node:20-alpine AS builder
 WORKDIR /tmp
 COPY . .
 # RUN npm i && npm run build && npm i --omit=dev
-RUN npm i -g pnpm && pnpm i && pnpm run build && pnpm i --prod
+RUN npm i -g pnpm && pnpm i --prod && pnpm run build
 
 FROM node:20-alpine
 WORKDIR /app
