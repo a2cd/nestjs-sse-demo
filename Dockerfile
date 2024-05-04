@@ -3,10 +3,14 @@ WORKDIR /tmp
 COPY . .
 # RUN npm i && npm run build && npm i --omit=dev
 RUN set -evx \
-&& npm i -g pnpm \
-&& npm i -g @nestjs/cli --registry=http://mirrors.cloud.tencent.com/npm/ \
-&& pnpm i --prod \
-&& pnpm run build
+  && npm i -g pnpm \
+  # 先下载所有依赖，包括devDependencies
+  && pnpm i \
+  && pnpm run build \
+  # 打包完成后删除冗余devDependencies
+  && rm -rf node_modules \
+  # 重新安装dependencies
+  && pnpm i --prod
 
 FROM node:20-alpine
 WORKDIR /app
