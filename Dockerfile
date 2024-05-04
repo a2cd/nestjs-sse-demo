@@ -1,6 +1,6 @@
 FROM node:16 AS builder
 WORKDIR /tmp
-COPY package.json pnpm-lock.json ./
+COPY package.json pnpm-lock.yaml ./
 RUN pnpm i --prod && pnpm run build
 
 FROM node:16-alpine
