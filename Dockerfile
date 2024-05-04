@@ -10,7 +10,9 @@ RUN set -evx \
   # 打包完成后删除冗余devDependencies
   && rm -rf node_modules \
   # 重新安装dependencies
-  && pnpm i --prod
+  && pnpm i --prod \
+  # 卸磨杀驴
+  && npm uninstall -g pnpm
 
 EXPOSE 3000
 ENTRYPOINT node dist/main
