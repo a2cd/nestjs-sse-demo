@@ -1,7 +1,7 @@
 FROM node:16 AS builder
 WORKDIR /tmp
-COPY package.json package-lock.json ./
-RUN npm install --production && npm run build
+COPY package.json pnpm-lock.json ./
+RUN pnpm i --prod && pnpm run build
 
 FROM node:16-alpine
 WORKDIR /app
