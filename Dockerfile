@@ -4,7 +4,7 @@ COPY . .
 # RUN npm i && npm run build && npm i --omit=dev
 RUN set -evx \
 && npm i -g pnpm \
-&& npm i -g @nestjs/cli --registry=https://registry.npmmirror.com \
+&& npm i -g @nestjs/cli --registry=http://mirrors.cloud.tencent.com/npm/ \
 && pnpm i --prod \
 && pnpm run build
 
