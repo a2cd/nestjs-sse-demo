@@ -1,0 +1,16 @@
+version: '3'
+services:
+  nest-hello-world:
+    hostname: nest-hello-world
+    image: nest-hello-world:20240504
+    container_name: nest-hello-world
+    environment:
+      - TZ=Asia/Shanghai
+    ports:
+      - "3000:3000"
+    networks:
+      - dev
+
+networks:
+  dev:
+    external: true
