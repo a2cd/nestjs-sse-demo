@@ -45,16 +45,15 @@
             console.log(event);
             source.close();
             source = null;
-            appendMsg('SSE被服务端关闭')
+            appendMsg('Connection ERROR!')
         };
     }
 
     function stopSse() {
-        if(source != null) {
-            source.close();
-            source = null;
-            appendMsg('SSE关闭成功')
-        }
+        if(source == null) return;
+        source.close();
+        source = null;
+        appendMsg('SSE关闭成功')
     }
 
     function clearHistory() {
@@ -65,7 +64,8 @@
     function appendMsg(msg) {
         const element = document.getElementById("board");
         const div = document.createElement("div");
-        const text = document.createTextNode(msg);
+        const now = new Date().toISOString();
+        const text = document.createTextNode(`${now} - ${msg}`);
         div.appendChild(text)
         element.appendChild(div);
     }
