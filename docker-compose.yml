@@ -9,8 +9,8 @@ services:
     ports:
       - "3000:3000"
     networks:
-      - dev
+      - main
 
 networks:
-  dev:
+  main:
     external: true
