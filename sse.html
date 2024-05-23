@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>sse</title>
+</head>
+<body>
+<div>clientId: <span id="uuid"></span></div>
+<button onclick="startSse()">开启SSE</button>
+<button onclick="stopSse()">关闭SSE</button>
+<button onclick="clearHistory()">清屏</button>
+<div id="board"></div>
+<script>
+    const uuid = generateUuid();
+    document.title = `sse-${uuid}`;
+    const uuidNode = document.createTextNode(uuid);
+    document.getElementById("uuid").appendChild(uuidNode);
+
+    let source = null;
+
+    function startSse() {
+        if(source != null) return;
+        source = new EventSource(`http://localhost:3000/app/sse/connect/${uuid}`, {withCredentials: false});
+        // source = new EventSource("http://localhost:3000/app/redis/listen/kelly", {withCredentials: false});
+        source.onopen = () => {
+            appendMsg("SSE连接成功")
+            console.log("SSE连接成功");
+        };
+
+        source.onmessage = event => {
+            try {
+                if (event.data && typeof event.data === "string") {
+                    console.log(event.data)
+                    appendMsg(event.data)
+                }
+            } catch (error) {
+                console.log("SSE消息异常", error);
+            }
+        };
+
+        // 监听错误
+        source.onerror = event => {
+            console.log(event);
+            source.close();
+            source = null;
+            appendMsg('SSE被服务端关闭')
+        };
+    }
+
+    function stopSse() {
+        if(source != null) {
+            source.close();
+            source = null;
+            appendMsg('SSE关闭成功')
+        }
+    }
+
+    function clearHistory() {
+        const element = document.getElementById("board");
+        element.innerHTML = '';
+    }
+
+    function appendMsg(msg) {
+        const element = document.getElementById("board");
+        const div = document.createElement("div");
+        const text = document.createTextNode(msg);
+        div.appendChild(text)
+        element.appendChild(div);
+    }
+
+    function generateUuid() {
+        return 'xxxx'.replace(/[xy]/g, function (c) {
+            const r = (Math.random() * 16) | 0,
+              v = c === "x" ? r : (r & 0x3) | 0x8;
+            return v.toString(16);
+        });
+    }
+</script>
+</body>
+</html>
