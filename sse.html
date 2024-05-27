@@ -7,23 +7,22 @@
     <title>sse</title>
 </head>
 <body>
-<div>clientId: <span id="uuid"></span></div>
+<div>clientId: <span id="clientId"></span></div>
 <button onclick="startSse()">开启SSE</button>
 <button onclick="stopSse()">关闭SSE</button>
 <button onclick="clearHistory()">清屏</button>
 <div id="board"></div>
 <script>
-    const uuid = generateUuid();
+    const uuid = generateClientId();
     document.title = `sse-${uuid}`;
     const uuidNode = document.createTextNode(uuid);
-    document.getElementById("uuid").appendChild(uuidNode);
+    document.getElementById("clientId").appendChild(uuidNode);
 
     let source = null;
 
     function startSse() {
         if(source != null) return;
         source = new EventSource(`http://localhost:3000/app/sse/connect/${uuid}`, {withCredentials: false});
-        // source = new EventSource("http://localhost:3000/app/redis/listen/kelly", {withCredentials: false});
         source.onopen = () => {
             appendMsg("SSE连接成功")
             console.log("SSE连接成功");
@@ -70,7 +69,7 @@
         element.appendChild(div);
     }
 
-    function generateUuid() {
+    function generateClientId() {
         return 'xxxx'.replace(/[xy]/g, function (c) {
             const r = (Math.random() * 16) | 0,
               v = c === "x" ? r : (r & 0x3) | 0x8;

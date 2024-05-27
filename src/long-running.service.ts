@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { RedisService } from './redis.service';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { EventPayload } from './event.service';
+import { EventPayload } from './event-listener';
 
 @Injectable()
 export class LongRunningService {

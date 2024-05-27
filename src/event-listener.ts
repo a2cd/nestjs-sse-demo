@@ -22,7 +22,7 @@ export class ClientEventPayload extends EventPayload {
 }
 
 @Injectable()
-export class EventService {
+export class EventListener {
   @OnEvent('client.*')
   handleClientEvents(payload: ClientEventPayload) {
     const subject = SubjectUtil.m.get(payload.clientId);

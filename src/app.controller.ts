@@ -4,7 +4,7 @@ import { interval, map, Observable, Subject } from 'rxjs';
 import { RedisService } from './redis.service';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { SubjectUtil } from './common';
-import { ClientEventPayload } from './event.service';
+import { ClientEventPayload } from './event-listener';
 @Controller('/app')
 export class AppController {
   constructor(

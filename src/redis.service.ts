@@ -3,9 +3,9 @@ import Redis, { RedisOptions } from 'ioredis';
 import { Callback } from 'ioredis/built/types';
 
 const redisOptions: RedisOptions = {
-  host: '10.60.20.70',
+  host: 'localhost',
   port: 6379,
-  password: 'WistronRedisDev..',
+  password: '',
   db: 0,
 };
 

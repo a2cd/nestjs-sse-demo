@@ -1,5 +1,7 @@
-# nest-hello-world
+# SSE Demo
 
-Nestjs  
-Prisma  
-ioredis
+SSE Demo based on nestjs
+
+nestjs + ioredis
+
+## 
