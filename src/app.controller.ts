@@ -5,8 +5,9 @@ import { RedisService } from './redis.service';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { SubjectManager } from './subject-manager';
 import { ClientEventPayload } from './global';
+import cfg from './cfg-reader';
 
-@Controller('/app')
+@Controller()
 export class AppController {
   constructor(
     private readonly appService: AppService,
@@ -17,6 +18,11 @@ export class AppController {
   @Get()
   getHello(): string {
     return this.appService.getHello();
+  }
+
+  @Get('/cfg')
+  getCfg(): string {
+    return cfg.server;
   }
 
   @Sse('/sse/1')

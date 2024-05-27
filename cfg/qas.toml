@@ -1,0 +1,16 @@
+
+[db]
+host = "HOSTQ"
+port = "PORTQ"
+db = "DBQ"
+schema = "SCHEMAQ"
+username = "USERNAMEQ"
+password = "PASSWORDQ"
+# "postgresql://USERNAME:PASSWORD@IP:PORT/DB"
+
+[redis]
+host = "111.231.98.148"
+port = 37255
+username = ""
+password = ""
+db = 0

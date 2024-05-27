@@ -2,6 +2,7 @@
 
 SSE Demo based on nestjs
 
-nestjs + ioredis
+nestjs + ioredis  
+pnpm + toml config
 
 ## 

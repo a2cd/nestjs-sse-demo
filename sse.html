@@ -22,7 +22,7 @@
 
     function startSse() {
         if(source != null) return;
-        source = new EventSource(`http://localhost:3000/app/sse/connect/${uuid}`, {withCredentials: false});
+        source = new EventSource(`http://localhost:8080/sse/connect/${uuid}`, {withCredentials: false});
         source.onopen = () => {
             appendMsg("SSE连接成功")
             console.log("SSE连接成功");

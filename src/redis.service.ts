@@ -1,12 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import Redis, { RedisOptions } from 'ioredis';
 import { Callback } from 'ioredis/built/types';
-
+import cfg from './cfg-reader';
 const redisOptions: RedisOptions = {
-  host: 'localhost',
-  port: 6379,
-  password: '',
-  db: 0,
+  host: cfg.redis.host,
+  port: cfg.redis.port,
+  username: cfg.redis.username,
+  password: cfg.redis.password,
+  db: cfg.redis.db,
 };
 
 @Injectable()
