@@ -1,38 +1,20 @@
 import { Injectable } from '@nestjs/common';
 import { OnEvent } from '@nestjs/event-emitter';
-import { SubjectUtil } from './common';
-
-export class EventPayload {
-  event: string;
-  data: string;
-
-  constructor(event: string, data: string) {
-    this.event = event;
-    this.data = data;
-  }
-}
-
-export class ClientEventPayload extends EventPayload {
-  clientId: string;
-
-  constructor(clientId: string, data: string) {
-    super(`client.${clientId}`, data);
-    this.clientId = clientId;
-  }
-}
+import { SubjectManager } from './subject-manager';
+import { ClientEventPayload, EventKey, EventPayload } from './global';
 
 @Injectable()
 export class EventListener {
-  @OnEvent('client.*')
+  @OnEvent(`${EventKey.CLIENT}.*`)
   handleClientEvents(payload: ClientEventPayload) {
-    const subject = SubjectUtil.m.get(payload.clientId);
+    const subject = SubjectManager.m.get(payload.clientId);
     subject.next(payload.data);
     console.log(`收到'client.*' event: ${payload.event}, data=${payload.data}`);
   }
 
-  @OnEvent('redis.blpop')
+  @OnEvent(EventKey.REDIS_BLPOP)
   handleBlocklistEvents(payload: EventPayload) {
-    for (const [, v] of SubjectUtil.m.entries()) {
+    for (const [, v] of SubjectManager.m.entries()) {
       if (v.observed) {
         v.next(payload.data);
       }

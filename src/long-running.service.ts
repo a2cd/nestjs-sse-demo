@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { RedisService } from './redis.service';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { EventPayload } from './event-listener';
+import { EventKey, EventPayload, RedisKey } from './global';
 
 @Injectable()
 export class LongRunningService {
@@ -13,9 +13,8 @@ export class LongRunningService {
     const r = this.redisService.client().duplicate();
     new Promise(async () => {
       while (true) {
-        // blpop返回kv数组
-        const kv = await r.blpop('block-list', 0);
-        const payload = new EventPayload('redis.blpop', kv[1]);
+        const kv = await r.blpop(RedisKey.BLOCK_LIST, 0); // blpop返回kv数组
+        const payload = new EventPayload(EventKey.REDIS_BLPOP, kv[1]);
         await this.eventEmitter2.emitAsync(payload.event, payload);
         await this.sleep(2000);
       }

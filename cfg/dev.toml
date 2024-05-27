@@ -1,0 +1,16 @@
+
+[db]
+host = "HOST"
+port = "PORT"
+db = "DB"
+schema = "SCHEMA"
+username = "USERNAME"
+password = "PASSWORD"
+# "postgresql://USERNAME:PASSWORD@IP:PORT/DB"
+
+[redis]
+host = "10.60.20.70"
+pord = 6379
+username = ""
+password = "WistronRedisDev.."
+db = 0

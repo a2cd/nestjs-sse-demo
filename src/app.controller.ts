@@ -3,8 +3,9 @@ import { AppService } from './app.service';
 import { interval, map, Observable, Subject } from 'rxjs';
 import { RedisService } from './redis.service';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { SubjectUtil } from './common';
-import { ClientEventPayload } from './event-listener';
+import { SubjectManager } from './subject-manager';
+import { ClientEventPayload } from './global';
+
 @Controller('/app')
 export class AppController {
   constructor(
@@ -18,10 +19,6 @@ export class AppController {
     return this.appService.getHello();
   }
 
-  @Get('/query')
-  async query(): Promise<string> {
-    return await this.appService.query();
-  }
   @Sse('/sse/1')
   sse1(): Observable<any> {
     // 连接时的id
@@ -45,7 +42,7 @@ export class AppController {
   @Sse('/sse/connect/:clientId')
   sseConnect(@Param('clientId') clientId: string): Observable<any> {
     const subject = new Subject();
-    SubjectUtil.m.set(clientId, subject);
+    SubjectManager.m.set(clientId, subject);
     return subject;
   }
 
@@ -54,12 +51,12 @@ export class AppController {
    */
   @Get('/sse/clear-idle')
   sseClearIdle(): string {
-    for (const [k, v] of SubjectUtil.m.entries()) {
+    for (const [k, v] of SubjectManager.m.entries()) {
       if (!v.observed) {
         v.error('关闭信号');
         v.complete();
         v.unsubscribe();
-        SubjectUtil.m.delete(k);
+        SubjectManager.m.delete(k);
         console.log(`清除idle sse: '${k}'`);
       }
     }
@@ -71,11 +68,11 @@ export class AppController {
    */
   @Get('/sse/clear-all')
   sseClearAll(): string {
-    for (const [k, v] of SubjectUtil.m.entries()) {
+    for (const [k, v] of SubjectManager.m.entries()) {
       v.error('关闭信号');
       v.complete();
       v.unsubscribe();
-      SubjectUtil.m.delete(k);
+      SubjectManager.m.delete(k);
       console.log(`清除idle sse: '${k}'`);
     }
     return `clear all sse OK`;
@@ -86,7 +83,7 @@ export class AppController {
    */
   @Get('/event/observed/:event')
   observed(@Param('event') event: string): string {
-    const subject = SubjectUtil.m.get(event);
+    const subject = SubjectManager.m.get(event);
     const o = subject.observed;
     return `浏览器是否连接: '${o}'`;
   }
@@ -107,9 +104,9 @@ export class AppController {
   /**
    * get
    */
-  @Get('/redis/get')
-  async redisGet(): Promise<string> {
-    return await this.redisService.get('hhh', (err, result) => {
+  @Get('/redis/get/:key')
+  async redisGet(@Param('key') key: string): Promise<string> {
+    return await this.redisService.get(key, (err, result) => {
       console.log('err:', err);
       console.log('result:', result);
     });
