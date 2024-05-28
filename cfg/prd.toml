@@ -9,8 +9,8 @@ password = "PASSWORDP"
 # "postgresql://USERNAME:PASSWORD@IP:PORT/DB"
 
 [redis]
-host = "111.231.98.148"
-port = 37255
+host = "localhost"
+port = 6379
 username = ""
 password = ""
 db = 0

@@ -48,6 +48,9 @@
         };
     }
 
+    /**
+     * 客户端主动断开SSE连接
+     */
     function stopSse() {
         if(source == null) return;
         source.close();
@@ -55,11 +58,17 @@
         appendMsg('SSE关闭成功')
     }
 
+    /**
+     * 清除界面信息
+     */
     function clearHistory() {
         const element = document.getElementById("board");
         element.innerHTML = '';
     }
 
+    /**
+     * 向界面追加信息
+     */
     function appendMsg(msg) {
         const element = document.getElementById("board");
         const div = document.createElement("div");
@@ -69,6 +78,9 @@
         element.appendChild(div);
     }
 
+    /**
+     * 生成4位随机字符
+     */
     function generateClientId() {
         return 'xxxx'.replace(/[xy]/g, function (c) {
             const r = (Math.random() * 16) | 0,
